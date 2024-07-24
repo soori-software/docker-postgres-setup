@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  prod-postgres:
+    image: postgres
+    container_name: prod_global_postgres_db
+    restart: always
+    command: postgres -c 'max_connections=100'
+    environment:
+      - POSTGRES_DB=${PROD_POSTGRES_DB}
+      - POSTGRES_USER=${PROD_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${PROD_POSTGRES_PASSWORD}
+    volumes:
+      - ./prod_global_postgres_db:/var/lib/postgresql/data
+    networks:
+      - prod_network
+
+  prod-pgadmin:
+    image: dpage/pgadmin4
+    container_name: prod_global_pgadmin4_container
+    restart: always
+    ports:
+      - "${PROD_PGADMIN_PORT}:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PROD_PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PROD_PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - ./prod_global_postgres_admin:/var/lib/postgresql/data/admin
+    networks:
+      - prod_network
+
+  prod-redis:
+    image: redis:latest
+    restart: always
+    container_name: prod_redis
+    env_file: .env
+    networks:
+      - prod_network
+
+volumes:
+  prod_global_postgres_db:
+  prod_global_postgres_admin:
+
+networks:
+  prod_network:
+    name: prod_network

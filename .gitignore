@@ -1,0 +1,6 @@
+.env
+uat_global_postgres_db/
+uat_global_postgres_admin/
+
+prod_global_postgres_db/
+prod_global_postgres_admin/
