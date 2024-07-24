@@ -6,13 +6,13 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-# Load environment variables from uat.env file
+# Load environment variables from .env file
 if [ ! -f .env ]; then
   echo ".env file not found!"
   exit 1
 fi
 
-# Export the variables from uat.env file
+# Export the variables from .env file
 export $(grep -v '^#' .env | xargs)
 
 # Check if the necessary variables are set

@@ -6,18 +6,18 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-# Load environment variables from prod.env file
+# Load environment variables from .env file
 if [ ! -f .env ]; then
   echo ".env file not found!"
   exit 1
 fi
 
-# Export the variables from prod.env file
+# Export the variables from .env file
 export $(grep -v '^#' .env | xargs)
 
 # Check if the necessary variables are set
 if [ -z "$PROD_CONTAINER_NAME" ] || [ -z "$PROD_POSTGRES_USER" ] || [ -z "$PROD_POSTGRES_DB" ]; then
-  echo "PROD_CONTAINER_NAME, PROD_POSTGRES_USER, and PROD_POSTGRES_DB must be set in the prod.env file."
+  echo "PROD_CONTAINER_NAME, PROD_POSTGRES_USER, and PROD_POSTGRES_DB must be set in the .env file."
   exit 1
 fi
 
