@@ -37,10 +37,6 @@ services:
     networks:
       - prod_network
 
-volumes:
-  prod_global_postgres_db:
-  prod_global_postgres_admin:
-
 networks:
   prod_network:
     name: prod_network

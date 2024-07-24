@@ -37,10 +37,6 @@ services:
     networks:
       - uat_network
 
-volumes:
-  uat_global_postgres_db:
-  uat_global_postgres_admin:
-
 networks:
   uat_network:
     name: uat_network
