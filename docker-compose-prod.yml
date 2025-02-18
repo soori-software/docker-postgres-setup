@@ -5,7 +5,8 @@ services:
     image: postgres
     container_name: prod_global_postgres_db
     restart: always
-    command: postgres -c 'max_connections=100'
+    # command: postgres -c 'max_connections=100'
+    command: postgres -c 'max_connections=200' -c 'shared_buffers=2GB'
     environment:
       - POSTGRES_DB=${PROD_POSTGRES_DB}
       - POSTGRES_USER=${PROD_POSTGRES_USER}
@@ -14,8 +15,6 @@ services:
       - ./prod_global_postgres_db:/var/lib/postgresql/data
     networks:
       - prod_network
-    ports:
-      - "${PROD_PG_EXPOSE_PORT}:5432"
 
   prod-pgadmin:
     image: dpage/pgadmin4
@@ -39,6 +38,26 @@ services:
     networks:
       - prod_network
 
+  prod-pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: prod_pgbouncer
+    restart: always
+    networks:
+      - prod_network
+    ports:
+      - "7432:5432"
+    depends_on:
+      - prod-postgres
+    environment:
+      - DB_USER=${PROD_POSTGRES_USER}
+      - DB_PASSWORD=${PROD_POSTGRES_PASSWORD}
+      - DB_HOST=prod-postgres
+      - AUTH_TYPE=scram-sha-256
+      - POOL_MODE=transaction
+      - ADMIN_USERS=postgres,${PROD_POSTGRES_USER}
+      - MAX_CLIENT_CONN=10000
+      - DEFAULT_POOL_SIZE=200
+      - SERVER_RESET_QUERY="DISCARD ALL"
 networks:
   prod_network:
     name: prod_network
