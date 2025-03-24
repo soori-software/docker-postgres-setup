@@ -19,6 +19,9 @@ services:
     depends_on:
       - prod-prepare-pgbouncer
 
+    ports:
+      - "5442:5432"
+
   # prod-pgadmin:
   #   image: dpage/pgadmin4
   #   container_name: prod_global_pgadmin4_container
