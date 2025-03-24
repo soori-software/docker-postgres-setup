@@ -16,6 +16,9 @@ services:
     networks:
       - prod_network
 
+    depends_on:
+      - prod-prepare-pgbouncer
+
   prod-pgadmin:
     image: dpage/pgadmin4
     container_name: prod_global_pgadmin4_container
@@ -58,6 +61,15 @@ services:
       - MAX_CLIENT_CONN=10000
       - DEFAULT_POOL_SIZE=200
       - SERVER_RESET_QUERY=DISCARD ALL
+
+
+  prod-prepare-pgbouncer:
+    image: prod-pgbouncer-prepare
+    container_name: prod_pgbouncer_prepare
+    build:
+      context: .
+      dockerfile: Dockerfile.pgbouncer
+
 networks:
   prod_network:
     name: prod_network

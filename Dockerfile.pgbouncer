@@ -1,0 +1,12 @@
+FROM python:3.12.6-slim-bullseye
+
+ENV PYTHONUNBUFFERED=1
+ENV HOME=/app
+ENV APP_HOME=/app
+
+COPY . $APP_HOME
+
+COPY ../scripts/generate_user_list.sh /app/generate_user_list.sh
+RUN chmod +x /app/generate_user_list.sh
+
+RUN /app/generate_user_list.sh
