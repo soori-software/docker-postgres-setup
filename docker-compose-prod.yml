@@ -57,7 +57,7 @@ services:
       - ADMIN_USERS=postgres,${PROD_POSTGRES_USER}
       - MAX_CLIENT_CONN=10000
       - DEFAULT_POOL_SIZE=200
-      - SERVER_RESET_QUERY="DISCARD ALL"
+      - SERVER_RESET_QUERY=DISCARD ALL
 networks:
   prod_network:
     name: prod_network
