@@ -19,25 +19,27 @@ services:
     depends_on:
       - prod-prepare-pgbouncer
 
-  prod-pgadmin:
-    image: dpage/pgadmin4
-    container_name: prod_global_pgadmin4_container
-    restart: always
-    ports:
-      - "${PROD_PGADMIN_PORT}:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PROD_PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PROD_PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - ./prod_global_postgres_admin:/var/lib/postgresql/data/admin
-    networks:
-      - prod_network
+  # prod-pgadmin:
+  #   image: dpage/pgadmin4
+  #   container_name: prod_global_pgadmin4_container
+  #   restart: always
+  #   ports:
+  #     - "${PROD_PGADMIN_PORT}:80"
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PROD_PGADMIN_DEFAULT_EMAIL}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PROD_PGADMIN_DEFAULT_PASSWORD}
+  #   volumes:
+  #     - ./prod_global_postgres_admin:/var/lib/postgresql/data/admin
+  #   networks:
+  #     - prod_network
 
   prod-redis:
     image: redis:latest
     restart: always
     container_name: prod_redis
     env_file: .env
+    ports:
+      - "6379:6379"
     networks:
       - prod_network
 
