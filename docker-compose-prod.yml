@@ -91,6 +91,8 @@ services:
       - ./configs/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     networks:
       - prod_network
+
+    # stop_grace_period: 30s
 networks:
   prod_network:
     name: prod_network
