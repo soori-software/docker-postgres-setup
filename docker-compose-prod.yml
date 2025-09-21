@@ -75,6 +75,22 @@ services:
       context: .
       dockerfile: Dockerfile.pgbouncer
 
+  prod-rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: prod_rabbitmq
+    restart: always
+    hostname: rabbitmq
+    ports:
+      - "${PROD_RABBITMQ_EXPOSE_PORT}:5672"
+      - "${PROD_RABBITMQ_MANAGEMENT_EXPOSE_PORT}:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${PROD_RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${PROD_RABBITMQ_PASS}
+    volumes:
+      - ./prod_rabbitmq_data:/var/lib/rabbitmq
+      - ./configs/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    networks:
+      - prod_network
 networks:
   prod_network:
     name: prod_network
