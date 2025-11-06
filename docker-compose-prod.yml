@@ -2,7 +2,7 @@ version: "3"
 
 services:
   prod-postgres:
-    image: postgres
+    image: postgres:17-alpine
     container_name: prod_global_postgres_db
     restart: always
     # command: postgres -c 'max_connections=100'
