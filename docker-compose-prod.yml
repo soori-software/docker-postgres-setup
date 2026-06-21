@@ -93,6 +93,45 @@ services:
       - prod_network
 
     # stop_grace_period: 30s
+
+
+
+  kafka:
+    image: apache/kafka:3.9.0
+    container_name: prod_kafka
+    restart: always
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+
+    # import uuid
+    # import base64
+    # u = uuid.uuid4()
+    # cluster_id = base64.urlsafe_b64encode(u.bytes).decode().rstrip("=")
+    # print(cluster_id)
+      KAFKA_CLUSTER_ID: ${PROD_KAFKA_CLUSTER_ID:-MkU3OEVBNTcwNTJENDM2Qk}
+      KAFKA_LISTENERS: B-INTERNAL://:29092,B-EXTERNAL://:9092,CONTROLLER://:9093
+      # PROD: replace localhost with actual server IP or domain
+      KAFKA_ADVERTISED_LISTENERS: B-INTERNAL://kafka:29092,B-EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: B-INTERNAL:PLAINTEXT,B-EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: B-INTERNAL
+
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@localhost:9093"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      # PROD: set a retention byte limit to prevent disk from filling up (default is unlimited)
+      # Example: 10737418240 = 10GB per partition
+      # KAFKA_LOG_RETENTION_BYTES: 10737418240
+    volumes:
+      # PROD: replace Docker-managed volume with an explicit path for easier backup and monitoring
+      # Example: - /data/kafka:/var/lib/kafka/data
+      - ./kafka-data:/var/lib/kafka/data
 networks:
   prod_network:
     name: prod_network
