@@ -132,6 +132,9 @@ services:
       # PROD: replace Docker-managed volume with an explicit path for easier backup and monitoring
       # Example: - /data/kafka:/var/lib/kafka/data
       - ./kafka-data:/var/lib/kafka/data
+
+    networks:
+      - prod_network
 networks:
   prod_network:
     name: prod_network
