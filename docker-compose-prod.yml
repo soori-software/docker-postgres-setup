@@ -101,7 +101,7 @@ services:
     container_name: prod_kafka
     restart: always
     ports:
-      - "5192:9092"
+      - "5192:7192"
       - "25192:29092"
     environment:
       KAFKA_NODE_ID: 1
